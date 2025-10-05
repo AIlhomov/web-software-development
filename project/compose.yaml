@@ -1,0 +1,48 @@
+services:
+  project_database:
+    image: postgres:17.5
+    container_name: project_postgresql_database
+    restart: unless-stopped
+    env_file: project.env
+    volumes:
+      - pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  database-migrations:
+    image: flyway/flyway:11.10
+    env_file: project.env
+    depends_on:
+      project_database:
+        condition: service_healthy
+    volumes:
+      - ./database-migrations:/flyway/sql
+    command: -connectRetries=60 -baselineOnMigrate=true migrate
+
+  server:
+    build: server
+    restart: unless-stopped
+    env_file: project.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      database-migrations:
+        condition: service_completed_successfully
+
+  client:
+    build: client
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./client/src:/app/src
+    ports:
+      - "5173:5173"
+    depends_on:
+      server:
+        condition: service_started
+
+volumes:
+  pg:
