@@ -1,17 +1,12 @@
 <script>
-    const todos = [
-        { id: 1, name: "First todo" },
-        { id: 2, name: "Second todo" },
-        { id: 3, name: "Third todo" },
-    ];
+    import { useTodoState } from "$lib/states/todoState.svelte.js";
+    let todoState = useTodoState();
 </script>
 
-<h1>Todos</h1>
-
 <ul>
-    {#each todos as todo (todo.id)}
+    {#each todoState.todos as todo (todo.id)}
         <li>
-            <a href="/todos/{todo.id}">{todo.name}</a>
+            <a href={`/todos/${todo.id}`}>{todo.name}</a>
         </li>
     {/each}
 </ul>

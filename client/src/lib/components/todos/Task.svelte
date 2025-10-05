@@ -1,7 +1,6 @@
 <script>
-    import TaskList from "$lib/components/todos/TaskList.svelte";
+    // Simplify Task component; it should present a single task context if needed.
     let { todoId, taskId } = $props();
 </script>
 
-<TaskList {taskId} />
 <h1>Todo {todoId}, task {taskId}</h1>
