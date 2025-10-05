@@ -1,15 +1,29 @@
 <script>
+    let { todoId } = $props();
     import { useTaskState } from "$lib/states/taskState.svelte.js";
-    export let todoId;
-    const { tasks } = useTaskState();
+
+    import Task from "./Task.svelte";
+    let taskState = useTaskState();
+    // RUNES MODE
+    let list = $derived(taskState.tasks[todoId] ?? []);
 </script>
 
-<h2>Tasks</h2>
-{#if !(tasks[todoId] && tasks[todoId].length)}
+{#if list.length === 0}
     <p>No tasks yet.</p>
 {/if}
 <ul>
-    {#each tasks[todoId] || [] as task (task.id)}
-        <li>{task.name}</li>
+    {#each list as task (task.id)}
+        <li><Task {task} {todoId} /></li>
     {/each}
 </ul>
+
+<style>
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0;
+    }
+    li {
+        margin: 0.25rem 0;
+    }
+</style>

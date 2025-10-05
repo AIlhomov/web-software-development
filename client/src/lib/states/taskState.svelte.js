@@ -1,4 +1,5 @@
-let taskState = $state({}); // Initially empty
+// Object keyed by todoId -> [{ id, name }]
+let taskState = $state({});
 
 const useTaskState = () => {
     return {

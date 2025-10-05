@@ -1,4 +1,4 @@
-let todoState = $state([]);
+let todoState = $state([]); // [{ id, name }]
 
 const useTodoState = () => {
     return {
@@ -9,11 +9,6 @@ const useTodoState = () => {
             const trimmed = (name ?? '').toString().trim();
             if (!trimmed) return;
             todoState.push({ id: todoState.length + 1, name: trimmed });
-        },
-        getOne: (id) => {
-            //console.log("Getting todo with id:", id);
-            console.log("Current todoState:", todoState);
-            return todoState.find((t) => t.id === id);
         },
     };
 };

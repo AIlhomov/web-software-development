@@ -1,23 +1,39 @@
 <script>
+    let { todoId } = $props();
     import { useTaskState } from "$lib/states/taskState.svelte.js";
-    export let todoId; // required to know which todo to add the task to
+    let taskState = useTaskState();
 
-    const { addTask } = useTaskState();
+    let name = $state("");
 
-    let taskName = "";
-
-    function handleAdd() {
-        const name = taskName.trim();
-        if (!name) return;
-        addTask(todoId, name);
-        taskName = ""; // clear input
-    }
+    const add = () => {
+        if (!name.trim()) return;
+        taskState.addTask(todoId, name.trim());
+        name = "";
+    };
 </script>
 
-<input
-    type="text"
-    bind:value={taskName}
-    placeholder="Task name"
-    on:keydown={(e) => e.key === "Enter" && handleAdd()}
-/>
-<button on:click={handleAdd}>Add Task</button>
+<div class="add">
+    <input
+        type="text"
+        bind:value={name}
+        placeholder="New task name"
+        aria-label="New task name"
+    />
+    <button onclick={add}>Add Task</button>
+</div>
+
+<style>
+    .add {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+    }
+    input {
+        flex: 1;
+        padding: 0.4rem 0.5rem;
+    }
+    button {
+        padding: 0.45rem 0.75rem;
+        cursor: pointer;
+    }
+</style>

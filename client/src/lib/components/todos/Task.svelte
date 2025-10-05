@@ -1,6 +1,16 @@
 <script>
-    // Simplify Task component; it should present a single task context if needed.
-    let { todoId, taskId } = $props();
+    let { task, todoId } = $props();
 </script>
 
-<h1>Todo {todoId}, task {taskId}</h1>
+<div class="task">
+    <a href={`/todos/${todoId}/tasks/${task.id}`}>{task.name}</a>
+</div>
+
+<style>
+    .task {
+        padding: 0.25rem 0;
+    }
+    a {
+        text-decoration: none;
+    }
+</style>

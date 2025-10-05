@@ -1,13 +1,11 @@
-<script>
-  import Header from "$lib/components/Header.svelte";
-  import Footer from "$lib/components/Footer.svelte";
-</script>
+<h1>Welcome</h1>
+<p><a href="/todos">Go to Todos</a></p>
 
-<Header />
-
-<main>
-  <h1>Welcome!</h1>
-  <a href="/todos">Go to Todos</a>
-</main>
-
-<Footer />
+<style>
+  h1 {
+    margin-bottom: 0.25rem;
+  }
+  a {
+    text-decoration: none;
+  }
+</style>

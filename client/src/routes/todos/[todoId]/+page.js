@@ -1,3 +1,3 @@
-export const load = ({ params }) => {
-    return params;
-};
+export function load({ params }) {
+    return { todoId: params.todoId };
+}

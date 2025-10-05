@@ -1,4 +1,3 @@
-export const load = ({ params }) => {
-    //console.log("paramaaaas:", params);
-    return params;
-};
+export function load({ params }) {
+    return { todoId: params.todoId, taskId: params.taskId };
+}
