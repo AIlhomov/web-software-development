@@ -1,11 +1,15 @@
 <script>
     let { todoId } = $props();
     import { useTaskState } from "$lib/states/taskState.svelte.js";
-
     import Task from "./Task.svelte";
     let taskState = useTaskState();
+
     // RUNES MODE
     let list = $derived(taskState.tasks[todoId] ?? []);
+
+    const remove = (taskId) => {
+        taskState.removeTask(todoId, taskId);
+    };
 </script>
 
 {#if list.length === 0}
@@ -13,7 +17,10 @@
 {/if}
 <ul>
     {#each list as task (task.id)}
-        <li><Task {task} {todoId} /></li>
+        <li style="display:flex;gap:.5rem;align-items:center">
+            <Task {task} {todoId} />
+            <button onclick={() => remove(task.id)}>Remove</button>
+        </li>
     {/each}
 </ul>
 

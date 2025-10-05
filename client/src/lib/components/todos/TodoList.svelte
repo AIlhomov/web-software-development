@@ -1,7 +1,16 @@
 <script>
     import { useTodoState } from "$lib/states/todoState.svelte.js";
-    let todoState = useTodoState();
+    import { useTaskState } from "$lib/states/taskState.svelte.js";
     import Todo from "./Todo.svelte";
+
+    let todoState = useTodoState();
+    let taskState = useTaskState();
+
+    const remove = (id) => {
+        // remove the todo and any tasks that belong to it
+        todoState.removeTodo(id);
+        taskState.removeAllForTodo(id);
+    };
 </script>
 
 {#if todoState.todos.length === 0}
@@ -9,7 +18,10 @@
 {/if}
 <ul>
     {#each todoState.todos as todo (todo.id)}
-        <li><Todo {todo} /></li>
+        <li style="display:flex;gap:.5rem;align-items:center">
+            <Todo {todo} />
+            <button onclick={() => remove(todo.id)}>Remove</button>
+        </li>
     {/each}
 </ul>
 
