@@ -22,7 +22,7 @@ services:
       - database
 
   database:
-    container_name: postgresql_database
+    container_name: material_postgresql_database
     image: postgres:17.5
     restart: unless-stopped
     env_file:

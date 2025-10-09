@@ -1,26 +1,22 @@
 import { Hono } from "@hono/hono";
 import { cors } from "@hono/hono/cors";
-import { logger } from "@hono/hono/logger";
-// importing database client
-import postgres from "postgres";
+import * as bookController from "./bookController.js";
+import * as chapterController from "./chapterController.js";
 
 const app = new Hono();
-// creating an instance of the database client
-const sql = postgres();
 
 app.use("/*", cors());
-app.use("/*", logger());
 
-let visits = 0;
-app.get("/api/visits", (c) => {
-  visits++;
-  return c.json({ visits });
-});
+app.post("/api/books", bookController.create);
+app.get("/api/books", bookController.readAll);
+app.get("/api/books/:bookId", bookController.readOne);
+app.put("/api/books/:bookId", bookController.update);
+app.delete("/api/books/:bookId", bookController.deleteOne);
 
-// retrieving todos from database on requests to /api/todos
-app.get("/api/todos", async (c) => {
-  const todos = await sql`SELECT * FROM todos`;
-  return c.json(todos);
-});
+app.post("/api/books/:bookId/chapters", chapterController.create);
+app.get("/api/books/:bookId/chapters", chapterController.readAll);
+app.get("/api/books/:bookId/chapters/:chapterId", chapterController.readOne);
+app.put("/api/books/:bookId/chapters/:chapterId", chapterController.update);
+app.delete("/api/books/:bookId/chapters/:chapterId", chapterController.deleteOne);
 
 export default app;

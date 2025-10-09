@@ -2,10 +2,12 @@ FROM denoland/deno:alpine-2.4.3
 
 WORKDIR /app
 
-COPY deno.json .
-
-RUN DENO_FUTURE=1 deno install
+# Lock file is optional; include if you have it
+COPY deno.json ./
+# Warm cache (no-op if modules not cached yet)
+RUN deno cache app-run.js || true
 
 COPY . .
 
-CMD [ "run", "--allow-env", "--allow-net", "--watch", "app-run.js" ]
+EXPOSE 8000
+CMD ["run","--allow-env","--allow-net","app-run.js"]
