@@ -1,11 +1,11 @@
 <script>
     import TodoList from "$lib/components/todos/TodoList.svelte";
-    import AddTodo from "$lib/components/todos/AddTodo.svelte";
+    import TodoForm from "$lib/components/todos/TodoForm.svelte";
 </script>
 
 <h1>Todos</h1>
 <TodoList />
-<AddTodo />
+<TodoForm />
 
 <style>
     h1 {

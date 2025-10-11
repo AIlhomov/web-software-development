@@ -22,10 +22,19 @@ const useTodoState = () => {
         get todos() {
             return todoState;
         },
-        addTodo: (name) => {
-            const trimmed = (name ?? "").toString().trim();
-            if (!trimmed) return;
-            todoState.push({ id: todoState.length + 1, name: trimmed });
+        addTodo: (todo) => {
+            // Support both object and string for backwards compatibility
+            let name;
+            if (typeof todo === "string") {
+                name = todo.trim();
+            } else if (todo && todo.name) {
+                name = todo.name.trim();
+            }
+
+            if (!name) return;
+
+            const nextId = todoState.length ? Math.max(...todoState.map((t) => t.id)) + 1 : 1;
+            todoState.push({ id: nextId, name: name });
             save();
         },
         removeTodo: (id) => {

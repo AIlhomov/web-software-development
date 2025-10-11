@@ -10,6 +10,10 @@
     const remove = (taskId) => {
         taskState.removeTask(todoId, taskId);
     };
+
+    const toggleDone = (taskId) => {
+        taskState.toggleTaskDone(todoId, taskId);
+    };
 </script>
 
 {#if list.length === 0}
@@ -18,7 +22,16 @@
 <ul>
     {#each list as task (task.id)}
         <li style="display:flex;gap:.5rem;align-items:center">
-            <Task {task} {todoId} />
+            {#if task.is_done}
+                <div class="task">
+                    <s>{task.name}</s>
+                </div>
+            {:else}
+                <Task {task} {todoId} />
+            {/if}
+            <button onclick={() => toggleDone(task.id)}>
+                {task.is_done ? "Mark not done" : "Mark done"}
+            </button>
             <button onclick={() => remove(task.id)}>Remove</button>
         </li>
     {/each}
@@ -32,5 +45,8 @@
     }
     li {
         margin: 0.25rem 0;
+    }
+    .task {
+        padding: 0.25rem 0;
     }
 </style>

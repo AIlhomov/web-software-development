@@ -26,21 +26,39 @@ const useTaskState = () => {
         getTasks: (todoId) => {
             return taskState[todoId] ?? [];
         },
-        addTask: (todoId, name) => {
-            const trimmed = (name ?? "").toString().trim();
-            if (!trimmed) return;
+        addTask: (todoId, task) => {
+            // Support both object and string for backwards compatibility
+            let description, isDone;
+            if (typeof task === "string") {
+                description = task.trim();
+                isDone = false;
+            } else if (task && task.description !== undefined) {
+                description = task.description.trim();
+                isDone = task.is_done ?? false;
+            }
+
+            if (!description) return;
+
             if (!taskState[todoId]) {
                 taskState[todoId] = [];
             }
             const list = taskState[todoId];
             const nextId = list.length ? Math.max(...list.map((t) => t.id)) + 1 : 1;
-            list.push({ id: nextId, name: trimmed });
+            list.push({ id: nextId, name: description, description: description, is_done: isDone });
             save();
         },
         removeTask: (todoId, taskId) => {
             if (!taskState[todoId]) return;
             taskState[todoId] = taskState[todoId].filter((t) => t.id !== taskId);
             save();
+        },
+        toggleTaskDone: (todoId, taskId) => {
+            if (!taskState[todoId]) return;
+            const task = taskState[todoId].find((t) => t.id === taskId);
+            if (task) {
+                task.is_done = !task.is_done;
+                save();
+            }
         },
         // optional: clear all tasks of a todo when that todo is removed
         removeAllForTodo: (todoId) => {
