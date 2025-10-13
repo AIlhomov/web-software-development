@@ -1,28 +1,28 @@
-let chapterState = $state({
-  1: [
-    { id: 1, name: "Hamster Homes" },
-    { id: 2, name: "Tiny Tables" },
-    { id: 3, name: "Forms & Seeds" },
-  ],
-  2: [
-    { id: 1, name: "Styling Bread" },
-    { id: 2, name: "Decorating Lettuce" },
-    { id: 3, name: "Advanced Pickles" },
-    { id: 4, name: "Garnish Mastery" },
-  ],
-  3: [
-    { id: 1, name: "Oops 101" },
-    { id: 2, name: "Many Errors" },
-    { id: 3, name: "Fifty More Bugs" },
-  ],
-});
+import { browser } from "$app/environment";
+import * as chaptersApi from "$lib/apis/chaptersApi.js";
+
+let chapterState = $state({});
 
 const useChapterState = () => {
   return {
     get chapters() {
       return chapterState;
     },
+    add: (bookId, chapter) => {
+      chaptersApi.createChapter(bookId, chapter).then((newChapter) => {
+        const chapters = chapterState[bookId] || [];
+        chapters.push(newChapter);
+        chapterState[bookId] = chapters;
+      });
+    },
   };
 };
+const initBookChapters = async (bookId) => {
+  if (!browser) {
+    return;
+  }
 
-export { useChapterState };
+  chapterState[bookId] = await chaptersApi.readChapters(bookId);
+};
+
+export { useChapterState, initBookChapters };
