@@ -6,9 +6,9 @@
     let todoState = useTodoState();
     let taskState = useTaskState();
 
-    const remove = (id) => {
+    const remove = async (id) => {
         // remove the todo and any tasks that belong to it
-        todoState.removeTodo(id);
+        await todoState.removeTodo(id);
         taskState.removeAllForTodo(id);
     };
 </script>

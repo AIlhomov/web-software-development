@@ -1,18 +1,18 @@
-<script></script>
+<script>
     import { useTodoState } from "$lib/states/todoState.svelte.js";
     let todoState = useTodoState();
 
     let name = $state("");
 
-    const addTodo = (event) => {
+    const addTodo = async (event) => {
         event.preventDefault();
         if (!name.trim()) return;
-        
+
         const todo = {
-            name: name.trim()
+            name: name.trim(),
         };
-        
-        todoState.addTodo(todo);
+
+        await todoState.addTodo(todo);
         name = "";
     };
 </script>
@@ -20,11 +20,7 @@
 <form onsubmit={addTodo} class="add">
     <label>
         Todo name
-        <input
-            type="text"
-            bind:value={name}
-            required
-        />
+        <input type="text" bind:value={name} required />
     </label>
     <button type="submit">Add Todo</button>
 </form>

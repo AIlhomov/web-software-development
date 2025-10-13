@@ -1,28 +1,28 @@
-let initial = [];
-if (typeof localStorage !== "undefined") {
-    const raw = localStorage.getItem("todos");
-    if (raw) {
-        try {
-            const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed)) initial = parsed;
-        } catch { }
-    }
-}
+import { getTodos, getTodo, createTodo, deleteTodo } from "$lib/apis/todosApi.js";
 
-let todoState = $state(initial); // [{ id, name }]
-
-const save = () => {
-    if (typeof localStorage !== "undefined") {
-        localStorage.setItem("todos", JSON.stringify(todoState));
-    }
-};
+let todoState = $state([]); // [{ id, name, created_at }]
 
 const useTodoState = () => {
     return {
         get todos() {
             return todoState;
         },
-        addTodo: (todo) => {
+        loadTodos: async () => {
+            const todos = await getTodos();
+            todoState = todos;
+        },
+        loadTodo: async (todoId) => {
+            const todo = await getTodo(todoId);
+            // Update or add the todo in the state
+            const index = todoState.findIndex((t) => t.id === todo.id);
+            if (index >= 0) {
+                todoState[index] = todo;
+            } else {
+                todoState.push(todo);
+            }
+            return todo;
+        },
+        addTodo: async (todo) => {
             // Support both object and string for backwards compatibility
             let name;
             if (typeof todo === "string") {
@@ -33,13 +33,12 @@ const useTodoState = () => {
 
             if (!name) return;
 
-            const nextId = todoState.length ? Math.max(...todoState.map((t) => t.id)) + 1 : 1;
-            todoState.push({ id: nextId, name: name });
-            save();
+            const created = await createTodo({ name });
+            todoState.push(created);
         },
-        removeTodo: (id) => {
+        removeTodo: async (id) => {
+            await deleteTodo(id);
             todoState = todoState.filter((t) => t.id !== id);
-            save();
         },
     };
 };
