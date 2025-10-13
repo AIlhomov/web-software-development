@@ -6,7 +6,7 @@
     let description = $state("");
     let isDone = $state(false);
 
-    const addTask = (event) => {
+    const addTask = async (event) => {
         event.preventDefault();
         if (!description.trim()) return;
 
@@ -15,7 +15,7 @@
             is_done: isDone,
         };
 
-        taskState.addTask(todoId, task);
+        await taskState.addTask(todoId, task);
         description = "";
         isDone = false;
     };

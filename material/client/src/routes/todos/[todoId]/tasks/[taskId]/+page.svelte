@@ -7,8 +7,28 @@
     let taskId = Number(data.taskId);
 
     const taskState = useTaskState();
-    let list = $derived(taskState.tasks[todoId] ?? []);
-    let task = $derived(list.find((t) => t.id === taskId));
+    let task = $state(null);
+
+    // Load the task from API when component mounts or taskId changes
+    $effect(() => {
+        const loadTask = async () => {
+            try {
+                // First check if task is already in state
+                const list = taskState.tasks[todoId] ?? [];
+                const existingTask = list.find((t) => t.id === taskId);
+                if (existingTask) {
+                    task = existingTask;
+                } else {
+                    // Otherwise fetch from API
+                    task = await taskState.loadTask(todoId, taskId);
+                }
+            } catch (error) {
+                console.error("Failed to load task:", error);
+                task = null;
+            }
+        };
+        loadTask();
+    });
 </script>
 
 <a href={`/todos/${todoId}`}>← Back to Todo {todoId}</a>

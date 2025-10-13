@@ -7,12 +7,12 @@
     // RUNES MODE
     let list = $derived(taskState.tasks[todoId] ?? []);
 
-    const remove = (taskId) => {
-        taskState.removeTask(todoId, taskId);
+    const remove = async (taskId) => {
+        await taskState.removeTask(todoId, taskId);
     };
 
-    const toggleDone = (taskId) => {
-        taskState.toggleTaskDone(todoId, taskId);
+    const toggleDone = async (taskId) => {
+        await taskState.toggleTaskDone(todoId, taskId);
     };
 </script>
 
