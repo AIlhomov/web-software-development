@@ -2,7 +2,9 @@
     import { useCommunityState } from "$lib/states/communityState.svelte.js";
     const state = useCommunityState();
 
-    const remove = (id) => state.removeCommunity(id);
+    const remove = async (id) => {
+        await state.removeCommunity(id);
+    };
 </script>
 
 {#if state.communities.length === 0}

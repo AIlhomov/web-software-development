@@ -1,44 +1,38 @@
-// communities stored in localStorage under key "communities"
-const STORAGE_KEY = "communities";
+import { getCommunities, getCommunity, createCommunity, deleteCommunity } from "$lib/apis/communitiesApi.js";
 
-// load once (browser only)
-let initial = [];
-if (typeof localStorage !== "undefined") {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-        try {
-            const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed)) initial = parsed;
-        } catch {
-            // ignore bad data
-        }
-    }
-}
-
-let communityState = $state(initial); // [{ id, name, description }]
-
-const save = () => {
-    if (typeof localStorage !== "undefined") {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(communityState));
-    }
-};
+let communityState = $state([]); // [{ id, name, description, created_at }]
 
 const useCommunityState = () => {
     return {
         get communities() {
             return communityState;
         },
-        addCommunity: (name, description) => {
+        loadCommunities: async () => {
+            const communities = await getCommunities();
+            communityState = communities;
+        },
+        loadCommunity: async (communityId) => {
+            const community = await getCommunity(communityId);
+            // Update or add the community in the state
+            const index = communityState.findIndex((c) => c.id === community.id);
+            if (index >= 0) {
+                communityState[index] = community;
+            } else {
+                communityState.push(community);
+            }
+            return community;
+        },
+        addCommunity: async (name, description) => {
             const n = (name ?? "").toString().trim();
             const d = (description ?? "").toString().trim();
             if (!n || !d) return;
-            const id = communityState.length + 1; // per spec
-            communityState.push({ id, name: n, description: d });
-            save();
+
+            const created = await createCommunity({ name: n, description: d });
+            communityState.push(created);
         },
-        removeCommunity: (id) => {
+        removeCommunity: async (id) => {
+            await deleteCommunity(id);
             communityState = communityState.filter((c) => c.id !== id);
-            save();
         },
         getOne: (id) => {
             const key = Number(id);
