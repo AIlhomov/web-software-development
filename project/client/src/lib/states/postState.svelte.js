@@ -1,26 +1,7 @@
-// LocalStorage key
-const STORAGE_KEY = "posts";
+import { getPosts, getPost, createPost, deletePost } from "$lib/apis/postsApi.js";
 
-// Load once (browser only)
-let initial = {};
-if (typeof localStorage !== "undefined") {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-        try {
-            const parsed = JSON.parse(raw);
-            if (parsed && typeof parsed === "object") initial = parsed;
-        } catch { }
-    }
-}
-
-// Shape: { [communityId:number]: [{ id:number, title:string, content:string }] }
-let postState = $state(initial);
-
-const save = () => {
-    if (typeof localStorage !== "undefined") {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(postState));
-    }
-};
+// Shape: { [communityId:number]: [{ id:number, title:string, content:string, community_id:number, parent_post_id:null, created_at:string }] }
+let postState = $state({});
 
 const usePostState = () => {
     return {
@@ -31,24 +12,46 @@ const usePostState = () => {
             const cid = Number(communityId);
             return postState[cid] ?? [];
         },
-        addPost: (communityId, title, content) => {
+        loadPosts: async (communityId) => {
+            const cid = Number(communityId);
+            const posts = await getPosts(cid);
+            postState[cid] = posts;
+        },
+        loadPost: async (communityId, postId) => {
+            const cid = Number(communityId);
+            const pid = Number(postId);
+            const post = await getPost(cid, pid);
+
+            if (!postState[cid]) {
+                postState[cid] = [];
+            }
+
+            const index = postState[cid].findIndex((p) => p.id === post.id);
+            if (index >= 0) {
+                postState[cid][index] = post;
+            } else {
+                postState[cid].push(post);
+            }
+            return post;
+        },
+        addPost: async (communityId, title, content) => {
             const cid = Number(communityId);
             const t = (title ?? "").toString().trim();
             const c = (content ?? "").toString().trim();
             if (!t || !c) return;
 
+            const created = await createPost(cid, { title: t, content: c });
+
             if (!postState[cid]) postState[cid] = [];
-            const list = postState[cid];
-            const nextId = list.length ? Math.max(...list.map((p) => p.id)) + 1 : 1;
-            list.push({ id: nextId, title: t, content: c });
-            save();
+            postState[cid].push(created);
         },
-        removePost: (communityId, postId) => {
+        removePost: async (communityId, postId) => {
             const cid = Number(communityId);
             const pid = Number(postId);
             if (!postState[cid]) return;
+
+            await deletePost(cid, pid);
             postState[cid] = postState[cid].filter((p) => p.id !== pid);
-            save();
         },
         getPost: (communityId, postId) => {
             const cid = Number(communityId);

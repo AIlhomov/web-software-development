@@ -1,15 +1,17 @@
 <script>
     import Community from "$lib/components/communities/Community.svelte";
     import PostList from "$lib/components/posts/PostList.svelte";
-    import AddPost from "$lib/components/posts/AddPost.svelte";
+    import PostForm from "$lib/components/posts/PostForm.svelte";
     import { useCommunityState } from "$lib/states/communityState.svelte.js";
+    import { usePostState } from "$lib/states/postState.svelte.js";
 
     let { data } = $props();
     const communityId = Number(data.communityId);
 
     const communityState = useCommunityState();
+    const postState = usePostState();
 
-    // Load the community from API when component mounts or communityId changes
+    // Load the community and posts from API when component mounts or communityId changes
     $effect(() => {
         const loadData = async () => {
             try {
@@ -21,8 +23,11 @@
                     // Otherwise fetch from API
                     await communityState.loadCommunity(communityId);
                 }
+
+                // Load posts for this community
+                await postState.loadPosts(communityId);
             } catch (error) {
-                console.error("Failed to load community:", error);
+                console.error("Failed to load community or posts:", error);
             }
         };
         loadData();
@@ -35,4 +40,4 @@
 
 <h2>Posts</h2>
 <PostList {communityId} />
-<AddPost {communityId} />
+<PostForm {communityId} />

@@ -7,7 +7,9 @@
     // derive current community's posts
     let list = $derived(postState.getPosts(communityId));
 
-    const remove = (id) => postState.removePost(communityId, id);
+    const remove = async (id) => {
+        await postState.removePost(communityId, id);
+    };
 </script>
 
 {#if list.length === 0}
