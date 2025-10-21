@@ -19,11 +19,9 @@
 <ul>
     {#each list as post (post.id)}
         <li>
-            <h3>
-                <a href={`/communities/${communityId}/posts/${post.id}`}
-                    >{post.title}</a
-                >
-            </h3>
+            <a href={`/communities/${communityId}/posts/${post.id}`}
+                >{post.title}</a
+            >
             <p>{post.content}</p>
             <button onclick={() => remove(post.id)}>Remove</button>
         </li>
@@ -39,11 +37,15 @@
     li {
         margin: 0.5rem 0 1rem;
     }
-    h3 {
-        margin: 0 0 0.25rem;
-    }
     a {
         text-decoration: none;
+        font-size: 1.2em;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+    p {
+        margin: 0.25rem 0;
     }
     button {
         margin-top: 0.25rem;

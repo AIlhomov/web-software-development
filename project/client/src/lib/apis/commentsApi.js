@@ -1,8 +1,8 @@
 import { PUBLIC_API_URL } from "$env/static/public";
 
-const getPosts = async (communityId) => {
+const getComments = async (communityId, postId) => {
     try {
-        const response = await fetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts`);
+        const response = await fetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/comments`);
         if (!response.ok) {
             return { data: null, error: response.statusText };
         }
@@ -13,27 +13,14 @@ const getPosts = async (communityId) => {
     }
 };
 
-const getPost = async (communityId, postId) => {
+const createComment = async (communityId, postId, comment) => {
     try {
-        const response = await fetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}`);
-        if (!response.ok) {
-            return { data: null, error: response.statusText };
-        }
-        const data = await response.json();
-        return { data, error: null };
-    } catch (error) {
-        return { data: null, error: error.message };
-    }
-};
-
-const createPost = async (communityId, post) => {
-    try {
-        const response = await fetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts`, {
+        const response = await fetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/comments`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(post),
+            body: JSON.stringify(comment),
         });
         if (!response.ok) {
             return { data: null, error: response.statusText };
@@ -45,9 +32,9 @@ const createPost = async (communityId, post) => {
     }
 };
 
-const deletePost = async (communityId, postId) => {
+const deleteComment = async (communityId, postId, commentId) => {
     try {
-        const response = await fetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}`, {
+        const response = await fetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/comments/${commentId}`, {
             method: "DELETE",
         });
         if (!response.ok) {
@@ -60,4 +47,4 @@ const deletePost = async (communityId, postId) => {
     }
 };
 
-export { getPosts, getPost, createPost, deletePost };
+export { getComments, createComment, deleteComment };

@@ -14,13 +14,25 @@ const usePostState = () => {
         },
         loadPosts: async (communityId) => {
             const cid = Number(communityId);
-            const posts = await getPosts(cid);
-            postState[cid] = posts;
+            const response = await getPosts(cid);
+            if (response.error) {
+                console.error("Failed to load posts:", response.error);
+                postState[cid] = [];
+                return;
+            }
+            postState[cid] = response.data;
         },
         loadPost: async (communityId, postId) => {
             const cid = Number(communityId);
             const pid = Number(postId);
-            const post = await getPost(cid, pid);
+            const response = await getPost(cid, pid);
+
+            if (response.error) {
+                console.error("Failed to load post:", response.error);
+                return null;
+            }
+
+            const post = response.data;
 
             if (!postState[cid]) {
                 postState[cid] = [];
@@ -40,7 +52,14 @@ const usePostState = () => {
             const c = (content ?? "").toString().trim();
             if (!t || !c) return;
 
-            const created = await createPost(cid, { title: t, content: c });
+            const response = await createPost(cid, { title: t, content: c });
+
+            if (response.error) {
+                console.error("Failed to create post:", response.error);
+                return;
+            }
+
+            const created = response.data;
 
             if (!postState[cid]) postState[cid] = [];
             postState[cid].push(created);
@@ -50,7 +69,11 @@ const usePostState = () => {
             const pid = Number(postId);
             if (!postState[cid]) return;
 
-            await deletePost(cid, pid);
+            const response = await deletePost(cid, pid);
+            if (response.error) {
+                console.error("Failed to delete post:", response.error);
+                return;
+            }
             postState[cid] = postState[cid].filter((p) => p.id !== pid);
         },
         getPost: (communityId, postId) => {
