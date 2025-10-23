@@ -15,6 +15,8 @@ const register = async (c) => {
     return c.json({ message: `Confirmation email sent to address ${user.email}.` });
 };
 
+//...
+
 const login = async (c) => {
     const user = await c.req.json();
 
@@ -28,14 +30,16 @@ const login = async (c) => {
         return c.json({ error: "Invalid email or password" }, 401);
     }
 
-    const payload = { id: foundUser.id, email: foundUser.email };
+    const payload = { email: foundUser.email, id: foundUser.id };
     const token = await jwt.sign(payload, JWT_SECRET);
 
     return c.json({
-        message: `Welcome back ${foundUser.email}!`,
-        user: { id: foundUser.id, email: foundUser.email },
+        message: "Login successful",
+        user: { email: foundUser.email },
         token
     });
 };
+
+//...
 
 export { login, register };
