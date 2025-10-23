@@ -29,4 +29,12 @@ app.delete("/api/reading-progress/book/:bookId", readingProgressController.delet
 
 // ...
 
+// ...
+
+import * as userController from "./userController.js";
+
+// Admin-only routes
+app.use("/api/admin/*", middlewares.authenticate, middlewares.requireAnyRole("ADMIN"));
+app.get("/api/admin/users", userController.getAllUsers);
+
 export default app;

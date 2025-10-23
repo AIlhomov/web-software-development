@@ -7,7 +7,12 @@
 <header>
   {#if authState.user}
     <div>
-      <span>Hello, {authState.user.email}!</span>
+      <span>
+        Hello, {authState.user.email}!
+        {#if authState.user.roles?.length}
+          (Roles: {authState.user.roles.join(", ")})
+        {/if}
+      </span>
       <button onclick={() => authState.logout()}>Logout</button>
     </div>
   {:else}
