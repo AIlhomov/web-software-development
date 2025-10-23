@@ -1,7 +1,8 @@
 import { PUBLIC_API_URL } from "$env/static/public";
+import { authFetch } from "$lib/utils/fetchUtils.js";
 
 const getTodos = async () => {
-    const response = await fetch(`${PUBLIC_API_URL}/api/todos`);
+    const response = await authFetch(`${PUBLIC_API_URL}/api/todos`);
     if (!response.ok) {
         throw new Error("Failed to fetch todos");
     }
@@ -9,7 +10,7 @@ const getTodos = async () => {
 };
 
 const getTodo = async (todoId) => {
-    const response = await fetch(`${PUBLIC_API_URL}/api/todos/${todoId}`);
+    const response = await authFetch(`${PUBLIC_API_URL}/api/todos/${todoId}`);
     if (!response.ok) {
         throw new Error("Failed to fetch todo");
     }
@@ -17,11 +18,8 @@ const getTodo = async (todoId) => {
 };
 
 const createTodo = async (todo) => {
-    const response = await fetch(`${PUBLIC_API_URL}/api/todos`, {
+    const response = await authFetch(`${PUBLIC_API_URL}/api/todos`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify(todo),
     });
     if (!response.ok) {
@@ -31,11 +29,8 @@ const createTodo = async (todo) => {
 };
 
 const updateTodo = async (todoId, todo) => {
-    const response = await fetch(`${PUBLIC_API_URL}/api/todos/${todoId}`, {
+    const response = await authFetch(`${PUBLIC_API_URL}/api/todos/${todoId}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify(todo),
     });
     if (!response.ok) {
@@ -45,7 +40,7 @@ const updateTodo = async (todoId, todo) => {
 };
 
 const deleteTodo = async (todoId) => {
-    const response = await fetch(`${PUBLIC_API_URL}/api/todos/${todoId}`, {
+    const response = await authFetch(`${PUBLIC_API_URL}/api/todos/${todoId}`, {
         method: "DELETE",
     });
     if (!response.ok) {

@@ -1,7 +1,8 @@
 import { PUBLIC_API_URL } from "$env/static/public";
+import { authFetch } from "$lib/utils/fetchUtils.js";
 
 const getTasks = async (todoId) => {
-    const response = await fetch(`${PUBLIC_API_URL}/api/todos/${todoId}/tasks`);
+    const response = await authFetch(`${PUBLIC_API_URL}/api/todos/${todoId}/tasks`);
     if (!response.ok) {
         throw new Error("Failed to fetch tasks");
     }
@@ -9,7 +10,7 @@ const getTasks = async (todoId) => {
 };
 
 const getTask = async (todoId, taskId) => {
-    const response = await fetch(`${PUBLIC_API_URL}/api/todos/${todoId}/tasks/${taskId}`);
+    const response = await authFetch(`${PUBLIC_API_URL}/api/todos/${todoId}/tasks/${taskId}`);
     if (!response.ok) {
         throw new Error("Failed to fetch task");
     }
@@ -17,11 +18,8 @@ const getTask = async (todoId, taskId) => {
 };
 
 const createTask = async (todoId, task) => {
-    const response = await fetch(`${PUBLIC_API_URL}/api/todos/${todoId}/tasks`, {
+    const response = await authFetch(`${PUBLIC_API_URL}/api/todos/${todoId}/tasks`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify(task),
     });
     if (!response.ok) {
@@ -31,11 +29,8 @@ const createTask = async (todoId, task) => {
 };
 
 const updateTask = async (todoId, taskId, task) => {
-    const response = await fetch(`${PUBLIC_API_URL}/api/todos/${todoId}/tasks/${taskId}`, {
+    const response = await authFetch(`${PUBLIC_API_URL}/api/todos/${todoId}/tasks/${taskId}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify(task),
     });
     if (!response.ok) {
@@ -45,7 +40,7 @@ const updateTask = async (todoId, taskId, task) => {
 };
 
 const deleteTask = async (todoId, taskId) => {
-    const response = await fetch(`${PUBLIC_API_URL}/api/todos/${todoId}/tasks/${taskId}`, {
+    const response = await authFetch(`${PUBLIC_API_URL}/api/todos/${todoId}/tasks/${taskId}`, {
         method: "DELETE",
     });
     if (!response.ok) {
