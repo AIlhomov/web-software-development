@@ -1,8 +1,10 @@
 <script>
+    import { useAuthState } from "$lib/states/authState.svelte.js";
     import { authFetch } from "$lib/utils/fetchUtils.js";
     import { PUBLIC_API_URL } from "$env/static/public";
 
-    let message = $state(null);
+    const authState = useAuthState();
+    let message = $state("");
 
     const fetchData = async () => {
         try {
@@ -10,10 +12,16 @@
             const data = await response.json();
             message = data.message;
         } catch (error) {
-            message = error.message;
+            console.error("Failed to fetch protected data:", error);
         }
     };
 </script>
 
-<button onclick={fetchData}>Fetch Protected Data</button>
-<p>Message: {message}</p>
+{#if authState.user}
+    <button onclick={fetchData}>Fetch Protected Data</button>
+    {#if message}
+        <p>{message}</p>
+    {/if}
+{:else}
+    <p>Hello anonymous!</p>
+{/if}

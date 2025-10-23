@@ -39,8 +39,8 @@ const useAuthState = () => {
             user = data.user;
             token = data.token;
 
-            localStorage.setItem("user", JSON.stringify(data.user));
-            localStorage.setItem("token", data.token);
+            localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+            localStorage.setItem(TOKEN_KEY, data.token);
 
             return data;
         },
@@ -58,8 +58,8 @@ const useAuthState = () => {
             user = null;
             token = null;
 
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
+            localStorage.removeItem(USER_KEY);
+            localStorage.removeItem(TOKEN_KEY);
         },
     };
 };
