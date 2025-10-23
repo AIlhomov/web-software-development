@@ -13,6 +13,11 @@
           (Roles: {authState.user.roles.join(", ")})
         {/if}
       </span>
+      {#if authState.user.roles?.includes("ADMIN")}
+        <ul>
+          <li><a href="/admin">Admin</a></li>
+        </ul>
+      {/if}
       <button onclick={() => authState.logout()}>Logout</button>
     </div>
   {:else}
