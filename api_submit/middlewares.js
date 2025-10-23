@@ -1,4 +1,5 @@
 import * as jwt from "@hono/hono/jwt";
+import * as authRepository from "./authRepository.js";
 
 const JWT_SECRET = "jwt_secret";
 
@@ -21,4 +22,20 @@ const authenticate = async (c, next) => {
     }
 };
 
-export { authenticate };
+const requireAdmin = async (c, next) => {
+    const user = c.get("user");
+
+    if (!user || !user.id) {
+        return c.json({ error: "Insufficient permissions" }, 403);
+    }
+
+    const roles = await authRepository.getUserRoles(user.id);
+
+    if (!roles.includes("ADMIN")) {
+        return c.json({ error: "Insufficient permissions" }, 403);
+    }
+
+    await next();
+};
+
+export { authenticate, requireAdmin };

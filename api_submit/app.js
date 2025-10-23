@@ -2,6 +2,7 @@ import { Hono } from "@hono/hono";
 import * as todoController from "./todoController.js";
 import * as taskController from "./taskController.js";
 import * as authController from "./authController.js";
+import * as adminController from "./adminController.js";
 import * as middlewares from "./middlewares.js";
 
 const app = new Hono();
@@ -24,5 +25,10 @@ app.get("/api/todos/:todoId/tasks", taskController.readAll);
 app.get("/api/todos/:todoId/tasks/:taskId", taskController.readOne);
 app.put("/api/todos/:todoId/tasks/:taskId", taskController.update);
 app.delete("/api/todos/:todoId/tasks/:taskId", taskController.deleteOne);
+
+// Admin routes
+app.use("/api/admin/*", middlewares.authenticate);
+app.use("/api/admin/*", middlewares.requireAdmin);
+app.get("/api/admin/stats", adminController.getStats);
 
 export default app;
