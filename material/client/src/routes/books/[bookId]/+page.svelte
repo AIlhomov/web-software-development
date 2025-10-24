@@ -1,5 +1,5 @@
 <script>
-  import Book from "$lib/components/Book.svelte";
+  import Book from "$lib/components/books/Book.svelte";
 
   import ChapterForm from "$lib/components/books/ChapterForm.svelte";
   import ChapterList from "$lib/components/books/ChapterList.svelte";
