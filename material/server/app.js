@@ -37,4 +37,31 @@ import * as userController from "./userController.js";
 app.use("/api/admin/*", middlewares.authenticate, middlewares.requireAnyRole("ADMIN"));
 app.get("/api/admin/users", userController.getAllUsers);
 
+
+// ...
+app.use(
+    "/*",
+    cors({
+        origin: "http://localhost:5173",
+        credentials: true,
+    }),
+);
+
+// ...
+import { auth } from "./betterAuth.js";
+
+// ...
+app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+// ...
+
+// ...
+import * as validators from "./validators.js";
+// ...
+
+app.post("/api/emails", zValidator("json", validators.emailValidator), (c) => {
+    const data = c.req.valid("json");
+    return c.json(data);
+});
+// ...
+
 export default app;
