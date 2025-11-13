@@ -16,18 +16,18 @@ const readOne = async (communityId, postId) => {
     return result[0];
 };
 
-const create = async (communityId, post) => {
+const create = async (communityId, post, userId) => {
     const result = await sql`
-    INSERT INTO posts (community_id, title, content)
-    VALUES (${communityId}, ${post.title ?? null}, ${post.content})
+    INSERT INTO posts (community_id, title, content, created_by)
+    VALUES (${communityId}, ${post.title ?? null}, ${post.content}, ${userId})
     RETURNING *`;
     return result[0];
 };
 
-const deleteOne = async (communityId, postId) => {
+const deleteOne = async (communityId, postId, userId) => {
     const result = await sql`
     DELETE FROM posts
-    WHERE community_id = ${communityId} AND id = ${postId}
+    WHERE community_id = ${communityId} AND id = ${postId} AND created_by = ${userId}
     RETURNING *`;
     return result[0];
 };

@@ -20,10 +20,10 @@ const readAll = async (communityId, postId) => {
 /**
  * Create a new comment (title is null, content required)
  */
-const create = async (communityId, postId, comment) => {
+const create = async (communityId, postId, comment, userId) => {
   const result = await sql`
-    INSERT INTO posts (community_id, title, content, parent_post_id)
-    VALUES (${communityId}, ${null}, ${comment.content}, ${postId})
+    INSERT INTO posts (community_id, title, content, parent_post_id, created_by)
+    VALUES (${communityId}, ${null}, ${comment.content}, ${postId}, ${userId})
     RETURNING *;
   `;
   return result[0];
@@ -32,12 +32,13 @@ const create = async (communityId, postId, comment) => {
 /**
  * Delete a comment by ids and return the deleted row (or undefined)
  */
-const deleteOne = async (communityId, postId, commentId) => {
+const deleteOne = async (communityId, postId, commentId, userId) => {
   const result = await sql`
     DELETE FROM posts
     WHERE id = ${commentId}
       AND community_id = ${communityId}
       AND parent_post_id = ${postId}
+      AND created_by = ${userId}
     RETURNING *;
   `;
   return result[0];

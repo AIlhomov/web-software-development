@@ -37,7 +37,8 @@ const create = async (c) => {
         return c.json({ error: "Missing required fields" }, 400);
     }
 
-    const created = await postRepository.create(communityId, { title, content });
+    const user = c.get("user");
+    const created = await postRepository.create(communityId, { title, content }, user.id);
     return c.json(created, 201);
 };
 
@@ -47,7 +48,8 @@ const deleteOne = async (c) => {
     if (communityId === null) return c.json({ error: "Invalid community id" }, 400);
     if (postId === null) return c.json({ error: "Invalid post id" }, 400);
 
-    const deleted = await postRepository.deleteOne(communityId, postId);
+    const user = c.get("user");
+    const deleted = await postRepository.deleteOne(communityId, postId, user.id);
     if (!deleted) return c.json({ error: "Post not found" }, 404);
     return c.json(deleted, 200);
 };

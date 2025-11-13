@@ -26,8 +26,8 @@ app.delete("/api/communities/:communityId", authenticate, communityController.de
 // posts (per community)
 app.get("/api/communities/:communityId/posts", postController.readAll);
 app.get("/api/communities/:communityId/posts/:postId", postController.readOne);
-app.post("/api/communities/:communityId/posts", postController.create);
-app.delete("/api/communities/:communityId/posts/:postId", postController.deleteOne);
+app.post("/api/communities/:communityId/posts", authenticate, postController.create);
+app.delete("/api/communities/:communityId/posts/:postId", authenticate, postController.deleteOne);
 
 // NEW comment routes…
 app.get(
@@ -36,10 +36,12 @@ app.get(
 );
 app.post(
     "/api/communities/:communityId/posts/:postId/comments",
+    authenticate,
     commentController.create,
 );
 app.delete(
     "/api/communities/:communityId/posts/:postId/comments/:commentId",
+    authenticate,
     commentController.deleteOne,
 );
 

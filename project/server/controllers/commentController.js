@@ -25,7 +25,8 @@ const create = async (c) => {
     const content = body?.content?.toString().trim();
     if (!content) return c.json({ error: "Missing required fields" }, 400);
 
-    const created = await commentRepository.create(communityId, postId, { content });
+    const user = c.get("user");
+    const created = await commentRepository.create(communityId, postId, { content }, user.id);
     return c.json(created, 201);
 };
 
@@ -37,7 +38,8 @@ const deleteOne = async (c) => {
     if (postId === undefined) return c.json({ error: "Invalid post id" }, 400);
     if (commentId === undefined) return c.json({ error: "Invalid comment id" }, 400);
 
-    const deleted = await commentRepository.deleteOne(communityId, postId, commentId);
+    const user = c.get("user");
+    const deleted = await commentRepository.deleteOne(communityId, postId, commentId, user.id);
     if (!deleted) return c.json({ error: "Comment not found" }, 404);
     return c.json(deleted, 200);
 };
