@@ -1,6 +1,9 @@
 <script>
     import { useCommunityState } from "$lib/states/communityState.svelte.js";
+    import { useAuthState } from "$lib/states/authState.svelte.js";
+    
     const communityState = useCommunityState();
+    const authState = useAuthState();
 
     const addCommunity = async (event) => {
         event.preventDefault();
@@ -15,12 +18,14 @@
     };
 </script>
 
+{#if authState.isAuthenticated}
 <form onsubmit={addCommunity}>
     <input type="text" name="name" placeholder="Community name" required />
     <textarea name="description" placeholder="Community description" required
     ></textarea>
     <button type="submit">Add community</button>
 </form>
+{/if}
 
 <style>
     form {

@@ -4,7 +4,7 @@ const JWT_SECRET = "jwt_secret";
 
 export const authenticate = async (c, next) => {
     const authHeader = c.req.header("Authorization");
-    
+
     if (!authHeader) {
         return c.json({ error: "Unauthorized" }, 401);
     }

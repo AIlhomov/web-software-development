@@ -16,6 +16,7 @@
             <span>Hello, {authState.user.email}!</span>
             <button onclick={handleLogout}>Logout</button>
         {:else}
+            <span>Hello anonymous!</span>
             <a href="/auth/login">Login</a>
             <a href="/auth/register">Register</a>
         {/if}

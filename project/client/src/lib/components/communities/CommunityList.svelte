@@ -1,6 +1,9 @@
 <script>
     import { useCommunityState } from "$lib/states/communityState.svelte.js";
+    import { useAuthState } from "$lib/states/authState.svelte.js";
+    
     const state = useCommunityState();
+    const authState = useAuthState();
 
     const remove = async (id) => {
         await state.removeCommunity(id);
@@ -16,7 +19,9 @@
         <li>
             <h2><a href={`/communities/${c.id}`}>{c.name}</a></h2>
             <p>{c.description}</p>
-            <button onclick={() => remove(c.id)}>Remove</button>
+            {#if authState.user && c.created_by === authState.user.id}
+                <button onclick={() => remove(c.id)}>Remove</button>
+            {/if}
         </li>
     {/each}
 </ul>
