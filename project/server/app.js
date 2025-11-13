@@ -6,6 +6,7 @@ import * as communityController from "./controllers/communityController.js";
 import * as postController from "./controllers/postController.js";
 import * as commentController from "./controllers/commentController.js";
 import * as authController from "./controllers/authController.js";
+import { authenticate } from "./middlewares.js";
 
 const app = new Hono();
 
@@ -19,8 +20,8 @@ app.post("/api/auth/login", authController.login);
 // communities
 app.get("/api/communities", communityController.readAll);
 app.get("/api/communities/:communityId", communityController.readOne);
-app.post("/api/communities", communityController.create);
-app.delete("/api/communities/:communityId", communityController.deleteOne);
+app.post("/api/communities", authenticate, communityController.create);
+app.delete("/api/communities/:communityId", authenticate, communityController.deleteOne);
 
 // posts (per community)
 app.get("/api/communities/:communityId/posts", postController.readAll);

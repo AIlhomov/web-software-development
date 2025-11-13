@@ -30,7 +30,8 @@ export const create = async (c) => {
 
     if (!name) return c.json({ error: "Missing required fields" }, 400);
 
-    const created = await repo.create({ name, description });
+    const user = c.get("user");
+    const created = await repo.create({ name, description, userId: user.id });
     return c.json(created, 201);
 };
 
@@ -38,7 +39,8 @@ export const deleteOne = async (c) => {
     const id = Number(c.req.param("communityId"));
     if (!isInt(id)) return c.json({ error: "Invalid id" }, 400);
 
-    const deleted = await repo.deleteById(id);
+    const user = c.get("user");
+    const deleted = await repo.deleteById(id, user.id);
     if (!deleted) return c.json({ error: "Community not found" }, 404);
 
     return c.json(deleted, 200);
