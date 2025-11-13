@@ -1,12 +1,6 @@
 import postgres from "postgres";
 
-const sql = postgres({
-    host: Deno.env.get("PGHOST"),
-    port: Number(Deno.env.get("PGPORT") ?? 5432),
-    database: Deno.env.get("PGDATABASE"),
-    username: Deno.env.get("PGUSER"),
-    password: Deno.env.get("PGPASSWORD"),
-});
+const sql = postgres();
 
 const readAll = async (communityId) => {
     return await sql`
