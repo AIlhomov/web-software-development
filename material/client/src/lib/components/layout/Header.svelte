@@ -1,6 +1,4 @@
 <script>
-    import DarkModeToggle from "../themes/DarkModeToggle.svelte";
-    import ThemeSwitcher from "../themes/ThemeSwitcher.svelte";
     import { useAuthState } from "$lib/states/authState.svelte.js";
     const authState = useAuthState();
 </script>
@@ -26,8 +24,4 @@
             {/if}
         </ul>
     </nav>
-    <div class="flex ml-auto">
-        <ThemeSwitcher />
-        <DarkModeToggle />
-    </div>
 </header>

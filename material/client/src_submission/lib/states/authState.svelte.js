@@ -29,18 +29,18 @@ const useAuthState = () => {
         },
         login: async (email, password) => {
             const response = await loginApi({ email, password });
-
+            
             if (!response.ok) {
                 const error = await response.json();
                 throw new Error(error.message || "Login failed");
             }
 
             const data = await response.json();
-
+            
             if (data.user && data.token) {
                 user = data.user;
                 token = data.token;
-
+                
                 if (browser) {
                     localStorage.setItem(USER_KEY, JSON.stringify(data.user));
                     localStorage.setItem(TOKEN_KEY, data.token);
@@ -49,7 +49,7 @@ const useAuthState = () => {
         },
         register: async (email, password) => {
             const response = await registerApi({ email, password });
-
+            
             if (!response.ok) {
                 const error = await response.json();
                 throw new Error(error.message || "Registration failed");

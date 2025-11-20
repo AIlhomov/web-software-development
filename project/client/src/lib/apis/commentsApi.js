@@ -1,4 +1,5 @@
 import { PUBLIC_API_URL } from "$env/static/public";
+import { authFetch } from "$lib/utils/fetchUtils.js";
 
 const getComments = async (communityId, postId) => {
     try {
@@ -15,7 +16,7 @@ const getComments = async (communityId, postId) => {
 
 const createComment = async (communityId, postId, comment) => {
     try {
-        const response = await fetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/comments`, {
+        const response = await authFetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/comments`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -34,7 +35,7 @@ const createComment = async (communityId, postId, comment) => {
 
 const deleteComment = async (communityId, postId, commentId) => {
     try {
-        const response = await fetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/comments/${commentId}`, {
+        const response = await authFetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/comments/${commentId}`, {
             method: "DELETE",
         });
         if (!response.ok) {

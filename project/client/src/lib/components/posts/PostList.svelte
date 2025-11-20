@@ -2,10 +2,13 @@
     let { communityId } = $props();
 
     import { usePostState } from "$lib/states/postState.svelte.js";
+    import { useAuthState } from "$lib/states/authState.svelte.js";
     const postState = usePostState();
+    const authState = useAuthState();
 
     // derive current community's posts
-    let list = $derived(postState.getPosts(communityId));
+    let list = $derived(postState.posts[communityId] ?? []);
+    //let list = $derived(postState.getPosts(communityId));
 
     const remove = async (id) => {
         await postState.removePost(communityId, id);
@@ -23,7 +26,9 @@
                 >{post.title}</a
             >
             <p>{post.content}</p>
-            <button onclick={() => remove(post.id)}>Remove</button>
+            {#if authState.user && authState.user.id === post.created_by}
+                <button onclick={() => remove(post.id)}>Remove</button>
+            {/if}
         </li>
     {/each}
 </ul>

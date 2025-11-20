@@ -2,7 +2,9 @@
     let { communityId } = $props();
 
     import { usePostState } from "$lib/states/postState.svelte.js";
+    import { useAuthState } from "$lib/states/authState.svelte.js";
     const postState = usePostState();
+    const authState = useAuthState();
 
     const addPost = async (event) => {
         event.preventDefault();
@@ -17,11 +19,13 @@
     };
 </script>
 
-<form onsubmit={addPost}>
-    <input type="text" name="title" placeholder="Post title" required />
-    <textarea name="content" placeholder="Post content" required></textarea>
-    <button type="submit">Add post</button>
-</form>
+{#if authState.isAuthenticated}
+    <form onsubmit={addPost}>
+        <input type="text" name="title" placeholder="Post title" required />
+        <textarea name="content" placeholder="Post content" required></textarea>
+        <button type="submit">Add post</button>
+    </form>
+{/if}
 
 <style>
     form {

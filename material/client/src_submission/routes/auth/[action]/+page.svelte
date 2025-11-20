@@ -71,11 +71,7 @@
                 required
             />
         </label>
-        <button
-            class="w-full btn preset-filled-primary-500"
-            type="submit"
-            disabled={isLoading}
-        >
+        <button class="w-full btn preset-filled-primary-500" type="submit" disabled={isLoading}>
             {isLoading
                 ? "Please wait..."
                 : data.action === "login"
@@ -86,15 +82,11 @@
 
     {#if data.action === "login"}
         <p class="text-center mt-6 text-sm">
-            Don't have an account? <a class="anchor" href="/auth/register"
-                >Register here</a
-            >
+            Don't have an account? <a class="anchor" href="/auth/register">Register here</a>
         </p>
     {:else}
         <p class="text-center mt-6 text-sm">
-            Already have an account? <a class="anchor" href="/auth/login"
-                >Login here</a
-            >
+            Already have an account? <a class="anchor" href="/auth/login">Login here</a>
         </p>
     {/if}
 </div>

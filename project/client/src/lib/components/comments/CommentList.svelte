@@ -2,7 +2,9 @@
     let { communityId, postId } = $props();
 
     import { useCommentState } from "$lib/states/commentState.svelte.js";
+    import { useAuthState } from "$lib/states/authState.svelte.js";
     const commentState = useCommentState();
+    const authState = useAuthState();
 
     // derive current post's comments
     let list = $derived(commentState.getComments(postId));
@@ -20,7 +22,9 @@
     {#each list as comment (comment.id)}
         <li>
             <p>{comment.content}</p>
-            <button onclick={() => remove(comment.id)}>Remove</button>
+            {#if authState.user && authState.user.id === comment.created_by}
+                <button onclick={() => remove(comment.id)}>Remove</button>
+            {/if}
         </li>
     {/each}
 </ul>
