@@ -1,0 +1,14 @@
+{
+  "name": "walking-skeleton",
+  "version": "1.0.0",
+  "description": "The libraries used in this project are: - Validation: Zod - Database Migrations: Flyway - Auth: Better Auth - UI Components: Svelte Material UI - Database: PostgreSQL",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.1"
+  }
+}

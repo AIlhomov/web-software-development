@@ -1,0 +1,21 @@
+{
+  "scriptId": "336",
+  "url": "file:///home/abduvohidilhomov/studies/web/walking-skeleton/testing/src/services/helloService.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 204, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getHello",
+      "ranges": [{ "startOffset": 56, "endOffset": 85, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "setHello",
+      "ranges": [{ "startOffset": 105, "endOffset": 150, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}

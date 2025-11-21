@@ -1,0 +1,29 @@
+{
+  "scriptId": "335",
+  "url": "file:///home/abduvohidilhomov/studies/web/walking-skeleton/testing/src/app.js",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 498, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 133, "endOffset": 175, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 197, "endOffset": 248, "count": 2 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        { "startOffset": 266, "endOffset": 475, "count": 2 },
+        { "startOffset": 350, "endOffset": 447, "count": 1 }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}
