@@ -1,13 +1,19 @@
 <script>
-    import { useAuthState } from "$lib/states/authState.svelte.js";
-    const authState = useAuthState();
+    import { onMount } from "svelte";
+    import { useHomePageState } from "$lib/states/homePageState.svelte.js";
+    import HomePageList from "$lib/components/homePage/HomePageList.svelte";
+    
+    const homePageState = useHomePageState();
+    
+    onMount(async () => {
+        await homePageState.loadPosts();
+    });
 </script>
 
 <h1>Welcome to the home page!</h1>
+<h2>Recent Posts (Last 3 Days)</h2>
 
-{#if authState.isAuthenticated}
-    <p><a href="/communities">Go to communities</a></p>
-{/if}
+<HomePageList />
 
 <style>
     h1 {

@@ -91,4 +91,17 @@ const downvotePost = async (communityId, postId) => {
     }
 };
 
-export { getPosts, getPost, createPost, deletePost, upvotePost, downvotePost };
+const getHomepagePosts = async () => {
+    try {
+        const response = await fetch(`${PUBLIC_API_URL}/api/homepage`);
+        if (!response.ok) {
+            return { data: null, error: response.statusText };
+        }
+        const data = await response.json();
+        return { data, error: null };
+    } catch (error) {
+        return { data: null, error: error.message };
+    }
+};
+
+export { getPosts, getPost, createPost, deletePost, upvotePost, downvotePost, getHomepagePosts };

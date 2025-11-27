@@ -11,15 +11,21 @@
 </script>
 
 <header>
-    <nav>
-        {#if authState.isAuthenticated}
-            <span>Hello, {authState.user.email}!</span>
-            <button onclick={handleLogout}>Logout</button>
-        {:else}
-            <span>Hello anonymous!</span>
-            <a href="/auth/login">Login</a>
-            <a href="/auth/register">Register</a>
-        {/if}
+    <nav class="main-nav">
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/communities">Communities</a>
+        </div>
+        <div class="user-section">
+            {#if authState.isAuthenticated}
+                <span>Hello, {authState.user.email}!</span>
+                <button onclick={handleLogout}>Logout</button>
+            {:else}
+                <span>Hello anonymous!</span>
+                <a href="/auth/login">Login</a>
+                <a href="/auth/register">Register</a>
+            {/if}
+        </div>
     </nav>
 </header>
 
@@ -34,9 +40,26 @@
         border-bottom: 1px solid #ccc;
     }
 
-    nav {
+    .main-nav {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .nav-links a {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .user-section {
+        display: flex;
         align-items: center;
         gap: 1rem;
     }
@@ -65,5 +88,7 @@
 
     main {
         padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
     }
 </style>
