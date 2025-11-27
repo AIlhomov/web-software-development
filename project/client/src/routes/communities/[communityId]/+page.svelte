@@ -34,10 +34,22 @@
     });
 </script>
 
-<a href="/communities">← Back to all communities</a>
+<div class="space-y-6">
+    <a href="/communities" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+        ← Back to all communities
+    </a>
 
-<Community {communityId} />
+    <Community {communityId} />
 
-<h2>Posts</h2>
-<PostList {communityId} />
-<PostForm {communityId} />
+    <div class="space-y-4">
+        <h2 class="text-3xl font-bold text-gray-900">Posts</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2">
+                <PostList {communityId} />
+            </div>
+            <div>
+                <PostForm {communityId} />
+            </div>
+        </div>
+    </div>
+</div>

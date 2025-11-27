@@ -11,37 +11,23 @@
 </script>
 
 {#if state.communities.length === 0}
-    <p>No communities yet.</p>
+    <p class="text-gray-600">No communities yet.</p>
 {/if}
 
-<ul>
+<ul class="space-y-4 list-none p-0">
     {#each state.communities as c (c.id)}
-        <li>
-            <h2><a href={`/communities/${c.id}`}>{c.name}</a></h2>
-            <p>{c.description}</p>
+        <li class="bg-white rounded-lg shadow-md p-5 hover:shadow-lg transition-shadow">
+            <h2 class="text-xl font-bold mb-2">
+                <a href={`/communities/${c.id}`} class="text-blue-600 hover:text-blue-800">{c.name}</a>
+            </h2>
+            <p class="text-gray-700 mb-3">{c.description}</p>
             {#if authState.user && c.created_by === authState.user.id}
-                <button onclick={() => remove(c.id)}>Remove</button>
+                <button 
+                    onclick={() => remove(c.id)} 
+                    class="px-3 py-1.5 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-medium">
+                    Remove
+                </button>
             {/if}
         </li>
     {/each}
 </ul>
-
-<style>
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0.75rem 0;
-    }
-    li {
-        margin: 0.5rem 0 1rem;
-    }
-    h2 {
-        margin: 0 0 0.25rem;
-    }
-    a {
-        text-decoration: none;
-    }
-    button {
-        margin-top: 0.25rem;
-    }
-</style>

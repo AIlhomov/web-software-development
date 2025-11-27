@@ -11,7 +11,15 @@
   });
 </script>
 
-<h1>Communities</h1>
+<div class="space-y-8">
+  <h1 class="text-4xl font-bold text-gray-900">Communities</h1>
 
-<CommunityList />
-<CommunityForm />
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div>
+      <CommunityList />
+    </div>
+    <div>
+      <CommunityForm />
+    </div>
+  </div>
+</div>

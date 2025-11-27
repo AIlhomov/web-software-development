@@ -28,8 +28,12 @@
 </script>
 
 {#if !post}
-    <p>Loading...</p>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <p class="text-gray-600">Loading...</p>
+    </div>
 {:else}
-    <h1>{post.title}</h1>
-    <p>{post.content}</p>
+    <div class="bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-lg shadow-lg p-6">
+        <h1 class="text-4xl font-bold mb-3">{post.title}</h1>
+        <p class="text-lg opacity-95">{post.content}</p>
+    </div>
 {/if}

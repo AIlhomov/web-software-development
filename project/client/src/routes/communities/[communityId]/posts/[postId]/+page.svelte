@@ -32,10 +32,22 @@
     });
 </script>
 
-<a href={`/communities/${communityId}`}>← Back to community</a>
+<div class="space-y-6">
+    <a href={`/communities/${communityId}`} class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+        ← Back to community
+    </a>
 
-<Post {communityId} {postId} />
+    <Post {communityId} {postId} />
 
-<h2>Comments</h2>
-<CommentForm {communityId} {postId} />
-<CommentList {communityId} {postId} />
+    <div class="space-y-4">
+        <h2 class="text-3xl font-bold text-gray-900">Comments</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2">
+                <CommentList {communityId} {postId} />
+            </div>
+            <div>
+                <CommentForm {communityId} {postId} />
+            </div>
+        </div>
+    </div>
+</div>

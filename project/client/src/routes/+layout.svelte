@@ -1,4 +1,5 @@
 <script>
+    import '../app.css';
     import { useAuthState } from "$lib/states/authState.svelte.js";
     import { goto } from "$app/navigation";
 
@@ -10,85 +11,39 @@
     }
 </script>
 
-<header>
-    <nav class="main-nav">
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/communities">Communities</a>
-        </div>
-        <div class="user-section">
-            {#if authState.isAuthenticated}
-                <span>Hello, {authState.user.email}!</span>
-                <button onclick={handleLogout}>Logout</button>
-            {:else}
-                <span>Hello anonymous!</span>
-                <a href="/auth/login">Login</a>
-                <a href="/auth/register">Register</a>
-            {/if}
-        </div>
-    </nav>
-</header>
+<div class="min-h-screen bg-gray-50">
+    <header class="bg-white shadow-md border-b border-gray-200">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex gap-6">
+                    <a href="/" class="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold text-lg transition-colors">
+                        <span>🏠</span>
+                        <span>Home</span>
+                    </a>
+                    <a href="/communities" class="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold text-lg transition-colors">
+                        <span>👥</span>
+                        <span>Communities</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    {#if authState.isAuthenticated}
+                        <span class="text-sm text-gray-700">Hello, <span class="font-semibold">{authState.user.email}</span>!</span>
+                        <button 
+                            onclick={handleLogout} 
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
+                            Logout
+                        </button>
+                    {:else}
+                        <span class="text-sm text-gray-700">Hello anonymous!</span>
+                        <a href="/auth/login" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">Login</a>
+                        <a href="/auth/register" class="px-4 py-2 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-medium">Register</a>
+                    {/if}
+                </div>
+            </div>
+        </nav>
+    </header>
 
-<main>
-    <slot />
-</main>
-
-<style>
-    header {
-        background-color: #f0f0f0;
-        padding: 1rem;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .main-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .nav-links {
-        display: flex;
-        gap: 1.5rem;
-    }
-
-    .nav-links a {
-        font-weight: 600;
-        font-size: 1.1rem;
-    }
-
-    .user-section {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    a {
-        color: #0066cc;
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    button {
-        padding: 0.5rem 1rem;
-        background-color: #cc0000;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #990000;
-    }
-
-    main {
-        padding: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-</style>
+    <main class="container mx-auto px-6 py-8">
+        <slot />
+    </main>
+</div>

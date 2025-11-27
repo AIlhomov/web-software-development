@@ -19,35 +19,36 @@
 </script>
 
 {#if authState.isAuthenticated}
-<form onsubmit={addCommunity}>
-    <input type="text" name="name" placeholder="Community name" required />
-    <textarea name="description" placeholder="Community description" required
-    ></textarea>
-    <button type="submit">Add community</button>
-</form>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">Add New Community</h3>
+        <form onsubmit={addCommunity} class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                    Community name
+                </label>
+                <input 
+                    type="text" 
+                    name="name" 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                    placeholder="Enter community name" 
+                    required />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                    Community description
+                </label>
+                <textarea 
+                    name="description" 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                    placeholder="Enter community description" 
+                    rows="4" 
+                    required></textarea>
+            </div>
+            <button 
+                type="submit" 
+                class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                Add community
+            </button>
+        </form>
+    </div>
 {/if}
-
-<style>
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-top: 1rem;
-        max-width: 600px;
-    }
-    input,
-    textarea {
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    textarea {
-        min-height: 80px;
-        resize: vertical;
-    }
-    button {
-        padding: 0.5rem 1rem;
-        cursor: pointer;
-        align-self: flex-start;
-    }
-</style>

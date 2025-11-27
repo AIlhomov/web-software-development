@@ -6,69 +6,28 @@
 </script>
 
 {#if posts.length === 0}
-    <p>No recent posts.</p>
+    <p class="text-lg text-gray-600 text-center">No recent posts.</p>
 {/if}
 
-<ul>
+<ul class="space-y-4 list-none p-0">
     {#each posts as post (post.id)}
-        <li>
-            <a href={`/communities/${post.community_id}/posts/${post.id}`}>
+        <li class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+            <a href={`/communities/${post.community_id}/posts/${post.id}`} 
+               class="text-2xl font-bold text-blue-600 hover:text-blue-800 no-underline block mb-3">
                 {post.title}
             </a>
-            <p>{post.content}</p>
-            <div class="stats">
-                <span>Upvotes: {post.upvotes ?? 0}</span>
-                <span>Downvotes: {post.downvotes ?? 0}</span>
-                <span>Comments: {post.comments ?? 0}</span>
+            <p class="text-gray-700 mb-4">{post.content}</p>
+            <div class="flex gap-3 flex-wrap">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                    ⬆️ Upvotes: {post.upvotes ?? 0}
+                </span>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                    ⬇️ Downvotes: {post.downvotes ?? 0}
+                </span>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                    💬 Comments: {post.comments ?? 0}
+                </span>
             </div>
         </li>
     {/each}
 </ul>
-
-<style>
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 1rem 0;
-    }
-    
-    li {
-        margin: 1rem 0;
-        padding: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        background-color: #f9f9f9;
-    }
-    
-    a {
-        text-decoration: none;
-        font-size: 1.3em;
-        font-weight: bold;
-        color: #0066cc;
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-    
-    a:hover {
-        text-decoration: underline;
-    }
-    
-    p {
-        margin: 0.5rem 0;
-        color: #333;
-    }
-    
-    .stats {
-        display: flex;
-        gap: 1rem;
-        margin-top: 0.5rem;
-        font-size: 0.9em;
-        color: #666;
-    }
-    
-    .stats span {
-        padding: 0.25rem 0.5rem;
-        background-color: #e0e0e0;
-        border-radius: 3px;
-    }
-</style>
