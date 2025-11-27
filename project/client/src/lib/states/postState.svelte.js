@@ -1,4 +1,4 @@
-import { getPosts, getPost, createPost, deletePost } from "$lib/apis/postsApi.js";
+import { getPosts, getPost, createPost, deletePost, upvotePost, downvotePost } from "$lib/apis/postsApi.js";
 
 // Shape: { [communityId:number]: [{ id:number, title:string, content:string, community_id:number, parent_post_id:null, created_at:string }] }
 let postState = $state({});
@@ -81,6 +81,44 @@ const usePostState = () => {
             const pid = Number(postId);
             const list = postState[cid] ?? [];
             return list.find((p) => p.id === pid);
+        },
+        upvotePost: async (communityId, postId) => {
+            const cid = Number(communityId);
+            const pid = Number(postId);
+
+            const response = await upvotePost(cid, pid);
+            if (response.error) {
+                console.error("Failed to upvote post:", response.error);
+                return;
+            }
+
+            const updatedPost = response.data;
+
+            if (postState[cid]) {
+                const index = postState[cid].findIndex((p) => p.id === pid);
+                if (index >= 0) {
+                    postState[cid][index] = updatedPost;
+                }
+            }
+        },
+        downvotePost: async (communityId, postId) => {
+            const cid = Number(communityId);
+            const pid = Number(postId);
+
+            const response = await downvotePost(cid, pid);
+            if (response.error) {
+                console.error("Failed to downvote post:", response.error);
+                return;
+            }
+
+            const updatedPost = response.data;
+
+            if (postState[cid]) {
+                const index = postState[cid].findIndex((p) => p.id === pid);
+                if (index >= 0) {
+                    postState[cid][index] = updatedPost;
+                }
+            }
         }
     };
 };

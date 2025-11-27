@@ -48,4 +48,34 @@ const deleteComment = async (communityId, postId, commentId) => {
     }
 };
 
-export { getComments, createComment, deleteComment };
+const upvoteComment = async (communityId, postId, commentId) => {
+    try {
+        const response = await authFetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/comments/${commentId}/upvote`, {
+            method: "POST",
+        });
+        if (!response.ok) {
+            return { data: null, error: response.statusText };
+        }
+        const data = await response.json();
+        return { data, error: null };
+    } catch (error) {
+        return { data: null, error: error.message };
+    }
+};
+
+const downvoteComment = async (communityId, postId, commentId) => {
+    try {
+        const response = await authFetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/comments/${commentId}/downvote`, {
+            method: "POST",
+        });
+        if (!response.ok) {
+            return { data: null, error: response.statusText };
+        }
+        const data = await response.json();
+        return { data, error: null };
+    } catch (error) {
+        return { data: null, error: error.message };
+    }
+};
+
+export { getComments, createComment, deleteComment, upvoteComment, downvoteComment };

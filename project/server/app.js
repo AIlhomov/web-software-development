@@ -17,6 +17,9 @@ app.use("/*", logger());
 app.post("/api/auth/register", authController.register);
 app.post("/api/auth/login", authController.login);
 
+// homepage
+app.get("/api/homepage", postController.homepage);
+
 // communities
 app.get("/api/communities", communityController.readAll);
 app.get("/api/communities/:communityId", communityController.readOne);

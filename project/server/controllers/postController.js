@@ -83,4 +83,9 @@ const downvote = async (c) => {
     return c.json(post, 200);
 };
 
-export { readAll, readOne, create, deleteOne, upvote, downvote };
+const homepage = async (c) => {
+    const posts = await postRepository.getRecentPosts();
+    return c.json(posts, 200);
+};
+
+export { readAll, readOne, create, deleteOne, upvote, downvote, homepage };

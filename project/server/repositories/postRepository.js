@@ -84,4 +84,31 @@ const getPostWithVotes = async (postId) => {
   return result[0];
 };
 
-export { readAll, readOne, create, deleteOne, getPostWithVotes };
+const getRecentPosts = async () => {
+  const threeDaysAgo = new Date();
+  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
+  const rows = await sql`
+    SELECT 
+      p.*,
+      COUNT(DISTINCT v.user_id) FILTER (WHERE v.vote = 'upvote') AS upvotes,
+      COUNT(DISTINCT v.user_id) FILTER (WHERE v.vote = 'downvote') AS downvotes,
+      COUNT(DISTINCT c.id) AS comments
+    FROM posts p
+    LEFT JOIN votes v ON p.id = v.post_id
+    LEFT JOIN posts c ON p.id = c.parent_post_id
+    WHERE p.parent_post_id IS NULL
+      AND p.created_at >= ${threeDaysAgo}
+    GROUP BY p.id
+    ORDER BY p.created_at DESC`;
+
+  // Convert counts from strings to integers
+  return rows.map(post => ({
+    ...post,
+    upvotes: parseInt(post.upvotes) || 0,
+    downvotes: parseInt(post.downvotes) || 0,
+    comments: parseInt(post.comments) || 0
+  }));
+};
+
+export { readAll, readOne, create, deleteOne, getPostWithVotes, getRecentPosts };

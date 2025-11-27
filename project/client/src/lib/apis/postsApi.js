@@ -61,4 +61,34 @@ const deletePost = async (communityId, postId) => {
     }
 };
 
-export { getPosts, getPost, createPost, deletePost };
+const upvotePost = async (communityId, postId) => {
+    try {
+        const response = await authFetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/upvote`, {
+            method: "POST",
+        });
+        if (!response.ok) {
+            return { data: null, error: response.statusText };
+        }
+        const data = await response.json();
+        return { data, error: null };
+    } catch (error) {
+        return { data: null, error: error.message };
+    }
+};
+
+const downvotePost = async (communityId, postId) => {
+    try {
+        const response = await authFetch(`${PUBLIC_API_URL}/api/communities/${communityId}/posts/${postId}/downvote`, {
+            method: "POST",
+        });
+        if (!response.ok) {
+            return { data: null, error: response.statusText };
+        }
+        const data = await response.json();
+        return { data, error: null };
+    } catch (error) {
+        return { data: null, error: error.message };
+    }
+};
+
+export { getPosts, getPost, createPost, deletePost, upvotePost, downvotePost };

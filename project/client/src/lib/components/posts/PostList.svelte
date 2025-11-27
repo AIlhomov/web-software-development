@@ -13,6 +13,14 @@
     const remove = async (id) => {
         await postState.removePost(communityId, id);
     };
+
+    const upvote = async (postId) => {
+        await postState.upvotePost(communityId, postId);
+    };
+
+    const downvote = async (postId) => {
+        await postState.downvotePost(communityId, postId);
+    };
 </script>
 
 {#if list.length === 0}
@@ -26,6 +34,15 @@
                 >{post.title}</a
             >
             <p>{post.content}</p>
+            <p>Post created by user {post.created_by}</p>
+            <div>
+                <span>Upvotes: {post.upvotes ?? 0}</span>
+                <span>Downvotes: {post.downvotes ?? 0}</span>
+            </div>
+            {#if authState.user}
+                <button onclick={() => upvote(post.id)}>Upvote</button>
+                <button onclick={() => downvote(post.id)}>Downvote</button>
+            {/if}
             {#if authState.user && authState.user.id === post.created_by}
                 <button onclick={() => remove(post.id)}>Remove</button>
             {/if}

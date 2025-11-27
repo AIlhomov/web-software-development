@@ -1,4 +1,4 @@
-import { getComments, createComment, deleteComment } from "$lib/apis/commentsApi.js";
+import { getComments, createComment, deleteComment, upvoteComment, downvoteComment } from "$lib/apis/commentsApi.js";
 
 // Shape: { [postId:number]: [{ id:number, title:null, content:string, community_id:number, parent_post_id:number, created_at:string }] }
 let commentState = $state({});
@@ -50,6 +50,46 @@ const useCommentState = () => {
                 return;
             }
             commentState[pid] = commentState[pid].filter((c) => c.id !== cmtId);
+        },
+        upvoteComment: async (communityId, postId, commentId) => {
+            const cid = Number(communityId);
+            const pid = Number(postId);
+            const cmtId = Number(commentId);
+
+            const response = await upvoteComment(cid, pid, cmtId);
+            if (response.error) {
+                console.error("Failed to upvote comment:", response.error);
+                return;
+            }
+
+            const updatedComment = response.data;
+
+            if (commentState[pid]) {
+                const index = commentState[pid].findIndex((c) => c.id === cmtId);
+                if (index >= 0) {
+                    commentState[pid][index] = updatedComment;
+                }
+            }
+        },
+        downvoteComment: async (communityId, postId, commentId) => {
+            const cid = Number(communityId);
+            const pid = Number(postId);
+            const cmtId = Number(commentId);
+
+            const response = await downvoteComment(cid, pid, cmtId);
+            if (response.error) {
+                console.error("Failed to downvote comment:", response.error);
+                return;
+            }
+
+            const updatedComment = response.data;
+
+            if (commentState[pid]) {
+                const index = commentState[pid].findIndex((c) => c.id === cmtId);
+                if (index >= 0) {
+                    commentState[pid][index] = updatedComment;
+                }
+            }
         }
     };
 };
