@@ -16,10 +16,15 @@ export const create = async (c) => {
     const description = body?.description?.toString().trim();
     if (!description) return c.json({ error: "Missing required fields" }, 400);
 
-    const created = await taskRepository.create(todoId, { description });
+    const user = c.get("user");
+    const created = await taskRepository.create(user.id, todoId, { description });
+
+    if (!created) {
+        return c.json({ error: "Todo not found" }, 404);
+    }
 
     if (Object.prototype.hasOwnProperty.call(body, "is_done")) {
-        const updated = await taskRepository.updateById(created.id, {
+        const updated = await taskRepository.updateById(user.id, created.id, {
             description: created.description,
             is_done: Boolean(body.is_done),
         });
@@ -33,7 +38,13 @@ export const readAll = async (c) => {
     const todoId = Number(c.req.param("todoId"));
     if (!isInt(todoId)) return c.json({ error: "Invalid todo id" }, 400);
 
-    const tasks = await taskRepository.findAll(todoId);
+    const user = c.get("user");
+    const tasks = await taskRepository.findAll(user.id, todoId);
+    
+    if (tasks === null) {
+        return c.json({ error: "Todo not found" }, 404);
+    }
+
     return c.json(tasks, 200);
 };
 
@@ -41,7 +52,9 @@ export const readOne = async (c) => {
     const taskId = Number(c.req.param("taskId"));
     if (!isInt(taskId)) return c.json({ error: "Invalid task id" }, 400);
 
-    const task = await taskRepository.findById(taskId);
+    const user = c.get("user");
+    const task = await taskRepository.findById(user.id, taskId);
+    
     if (!task) return c.json({ error: "Task not found" }, 404);
 
     return c.json(task, 200);
@@ -65,7 +78,8 @@ export const update = async (c) => {
         return c.json({ error: "Missing required fields" }, 400);
     }
 
-    const updated = await taskRepository.updateById(taskId, {
+    const user = c.get("user");
+    const updated = await taskRepository.updateById(user.id, taskId, {
         description,
         is_done: body.is_done,
     });
@@ -79,7 +93,9 @@ export const deleteOne = async (c) => {
     const taskId = Number(c.req.param("taskId"));
     if (!isInt(taskId)) return c.json({ error: "Invalid task id" }, 400);
 
-    const deleted = await taskRepository.deleteById(taskId);
+    const user = c.get("user");
+    const deleted = await taskRepository.deleteById(user.id, taskId);
+    
     if (!deleted) return c.json({ error: "Task not found" }, 404);
 
     return c.json(deleted, 200);
