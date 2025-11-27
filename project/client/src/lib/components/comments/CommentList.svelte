@@ -28,34 +28,45 @@
 
 <ul class="space-y-3 list-none p-0">
     {#each list as comment (comment.id)}
-        <li class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
+        <li
+            class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow"
+        >
             <p class="text-base text-gray-800 mb-2">{comment.content}</p>
-            <p class="text-sm text-gray-500 mb-3">Comment created by user {comment.created_by}</p>
+            <p class="text-sm text-gray-500 mb-3">
+                Comment created by user {comment.created_by}
+            </p>
             <div class="flex gap-2 flex-wrap mb-3">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                <span
+                    class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800"
+                >
                     ⬆️ Upvotes: {comment.upvotes ?? 0}
                 </span>
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                <span
+                    class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800"
+                >
                     ⬇️ Downvotes: {comment.downvotes ?? 0}
                 </span>
             </div>
             <div class="flex gap-2 flex-wrap">
                 {#if authState.user}
-                    <button 
-                        onclick={() => upvote(comment.id)} 
-                        class="px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-700 transition-colors text-sm font-medium">
+                    <button
+                        onclick={() => upvote(comment.id)}
+                        class="px-3 py-1.5 bg-green-600 text-white rounded hover:bg-green-700 transition-colors text-sm font-medium"
+                    >
                         Upvote
                     </button>
-                    <button 
-                        onclick={() => downvote(comment.id)} 
-                        class="px-3 py-1.5 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-medium">
+                    <button
+                        onclick={() => downvote(comment.id)}
+                        class="px-3 py-1.5 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-medium"
+                    >
                         Downvote
                     </button>
                 {/if}
                 {#if authState.user && authState.user.id === comment.created_by}
-                    <button 
-                        onclick={() => remove(comment.id)} 
-                        class="px-3 py-1.5 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors text-sm font-medium">
+                    <button
+                        onclick={() => remove(comment.id)}
+                        class="px-3 py-1.5 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors text-sm font-medium"
+                    >
                         Remove
                     </button>
                 {/if}

@@ -35,7 +35,10 @@
 </script>
 
 <div class="space-y-6">
-    <a href="/communities" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+    <a
+        href="/communities"
+        class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+    >
         ← Back to all communities
     </a>
 
