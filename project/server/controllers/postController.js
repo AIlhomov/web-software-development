@@ -1,4 +1,5 @@
 import * as postRepository from "../repositories/postRepository.js";
+import * as voteRepository from "../repositories/voteRepository.js";
 
 const parseIntOrBad = (val) => {
     const n = Number(val);
@@ -54,4 +55,32 @@ const deleteOne = async (c) => {
     return c.json(deleted, 200);
 };
 
-export { readAll, readOne, create, deleteOne };
+const upvote = async (c) => {
+    const communityId = parseIntOrBad(c.req.param("communityId"));
+    const postId = parseIntOrBad(c.req.param("postId"));
+    if (communityId === null) return c.json({ error: "Invalid community id" }, 400);
+    if (postId === null) return c.json({ error: "Invalid post id" }, 400);
+
+    const user = c.get("user");
+    await voteRepository.upsertVote(user.id, postId, "upvote");
+
+    const post = await postRepository.getPostWithVotes(postId);
+    if (!post) return c.json({ error: "Post not found" }, 404);
+    return c.json(post, 200);
+};
+
+const downvote = async (c) => {
+    const communityId = parseIntOrBad(c.req.param("communityId"));
+    const postId = parseIntOrBad(c.req.param("postId"));
+    if (communityId === null) return c.json({ error: "Invalid community id" }, 400);
+    if (postId === null) return c.json({ error: "Invalid post id" }, 400);
+
+    const user = c.get("user");
+    await voteRepository.upsertVote(user.id, postId, "downvote");
+
+    const post = await postRepository.getPostWithVotes(postId);
+    if (!post) return c.json({ error: "Post not found" }, 404);
+    return c.json(post, 200);
+};
+
+export { readAll, readOne, create, deleteOne, upvote, downvote };

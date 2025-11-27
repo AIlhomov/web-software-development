@@ -29,6 +29,10 @@ app.get("/api/communities/:communityId/posts/:postId", postController.readOne);
 app.post("/api/communities/:communityId/posts", authenticate, postController.create);
 app.delete("/api/communities/:communityId/posts/:postId", authenticate, postController.deleteOne);
 
+// post voting
+app.post("/api/communities/:communityId/posts/:postId/upvote", authenticate, postController.upvote);
+app.post("/api/communities/:communityId/posts/:postId/downvote", authenticate, postController.downvote);
+
 // NEW comment routes…
 app.get(
     "/api/communities/:communityId/posts/:postId/comments",
@@ -43,6 +47,18 @@ app.delete(
     "/api/communities/:communityId/posts/:postId/comments/:commentId",
     authenticate,
     commentController.deleteOne,
+);
+
+// comment voting
+app.post(
+    "/api/communities/:communityId/posts/:postId/comments/:commentId/upvote",
+    authenticate,
+    commentController.upvote,
+);
+app.post(
+    "/api/communities/:communityId/posts/:postId/comments/:commentId/downvote",
+    authenticate,
+    commentController.downvote,
 );
 
 export default app;
